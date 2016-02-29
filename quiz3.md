@@ -49,7 +49,16 @@
  
  1. 以ucore lab8的answer为例，尝试修改并运行ucore OS kernel代码，使其具有类似Linux应用工具`strace`的功能，即能够显示出应用程序发出的系统调用，从而可以分析ucore应用的系统调用执行过程。
  
-基本思路，主要在syscall中添加一些代码，对各个syscall number的调用次数进行统计即可
+	基本思路，主要在syscall中添加一些代码，对各个syscall number的调用次数进行统计即可
 
+		syscall(int num, ...) {
+			// add a cprintf in this place
+			cprintf("syscall: %d\n", num);
+		
+		    va_list ap;
+		    va_start(ap, num);
+		    uint32_t a[MAX_ARGS];
+		    int i, ret;
+			...
 	
  
