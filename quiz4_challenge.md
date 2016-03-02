@@ -40,7 +40,7 @@ lab1_switch_test(void) {
 }
 ```
 
-得到的结果如下
+得到的结果如下：多打印出esp，ebp的结果，可是发现是一样的？
 
 ```
 0: @ring 0
@@ -50,14 +50,6 @@ lab1_switch_test(void) {
 0:  ss = 10
 0:  esp = 7ba0
 0:  ebp = 7bb8
-ebp:0x00007bb8 eip:0x001009b7 args:0x0010e560 0x00000100 0x00007be8 0x00100069 
-    kern/debug/kdebug.c:305: print_stackframe+21
-ebp:0x00007bc8 eip:0x001001fa args:0x00000000 0x00000000 0x0010fd80 0x00103440 
-    kern/init/init.c:137: lab1_switch_test+15
-ebp:0x00007be8 eip:0x00100069 args:0x00000000 0x00000000 0x00000000 0x00007c4f 
-    kern/init/init.c:46: kern_init+104
-ebp:0x00007bf8 eip:0x00007d63 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8 
-    <unknow>: -- 0x00007d62 --
 +++ switch to  user  mode +++
 1: @ring 3
 1:  cs = 1b
@@ -66,14 +58,6 @@ ebp:0x00007bf8 eip:0x00007d63 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8
 1:  ss = 23
 1:  esp = 7ba0
 1:  ebp = 7bb8
-ebp:0x00007bb8 eip:0x001009b7 args:0x0010e560 0x00000100 0x00007be8 0x00100069 
-    kern/debug/kdebug.c:305: print_stackframe+21
-ebp:0x00007bc8 eip:0x00100219 args:0x00000000 0x00000000 0x0010fd80 0x00103440 
-    kern/init/init.c:142: lab1_switch_test+46
-ebp:0x00007be8 eip:0x00100069 args:0x00000000 0x00000000 0x00000000 0x00007c4f 
-    kern/init/init.c:46: kern_init+104
-ebp:0x00007bf8 eip:0x00007d63 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8 
-    <unknow>: -- 0x00007d62 --
 +++ switch to kernel mode +++
 2: @ring 0
 2:  cs = 8
@@ -82,12 +66,5 @@ ebp:0x00007bf8 eip:0x00007d63 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8
 2:  ss = 10
 2:  esp = 7ba0
 2:  ebp = 7bb8
-ebp:0x00007bb8 eip:0x001009b7 args:0x0010e560 0x00000100 0x00007be8 0x00100069 
-    kern/debug/kdebug.c:305: print_stackframe+21
-ebp:0x00007bc8 eip:0x00100238 args:0x00000000 0x00000000 0x0010fd80 0x00103440 
-    kern/init/init.c:147: lab1_switch_test+77
-ebp:0x00007be8 eip:0x00100069 args:0x00000000 0x00000000 0x00000000 0x00007c4f 
-    kern/init/init.c:46: kern_init+104
-ebp:0x00007bf8 eip:0x00007d63 args:0xc031fcfa 0xc08ed88e 0x64e4d08e 0xfa7502a8 
-    <unknow>: -- 0x00007d62 --
+
 ```
