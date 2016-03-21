@@ -88,15 +88,6 @@ else:
     hits = 0
     miss = 0
 
-    if policy == 'FIFO':
-        leftStr = 'FirstIn'
-        riteStr = 'Lastin '
-    elif policy == 'LRU':
-        leftStr = 'LRU'
-        riteStr = 'MRU'
-    elif policy == 'OPT' or  policy == 'CLOCK':
-        leftStr = 'Left '
-        riteStr = 'Right'
     if policy == 'PFR':
         leftStr = 'Left '
         riteStr = 'Right'
@@ -123,9 +114,6 @@ else:
         try:
             idx = memory.index(n)
             hits = hits + 1
-            if policy == 'LRU' :
-                update = memory.remove(n)
-                memory.append(n) # puts it on MRU side
             pf_span = -1
         except:
             # miss
@@ -160,66 +148,6 @@ else:
                 else:
                     if notrace == False:
                         print "\t[Page Fault] span %d <= threshold" %(pf_span)
-
-            elif count == pageframesize and policy != "PFR":
-                # must replace
-                if policy == 'FIFO' or policy == 'LRU':
-                    victim = memory.pop(0)
-                elif policy == 'CLOCK':
-                    if cdebug:
-                        print 'REFERENCE TO PAGE', n
-                        print 'MEMORY ', memory
-                        print 'REF (b)', ref
-                    # hack: for now, do random
-                    # victim = memory.pop(int(random.random() * count))
-                    victim = -1
-                    while victim == -1:
-                        page = memory[int(random.random() * count)]
-                        if cdebug:
-                            print '  scan page:', page, ref[page]
-                        if ref[page] >= 1:
-                            ref[page] -= 1
-                        else:
-                            # this is our victim
-                            victim = page
-                            memory.remove(page)
-                            break
-
-                    # remove old page's ref count
-                    if page in memory:
-                        assert('BROKEN')
-                    del ref[victim]
-                    if cdebug:
-                        print 'VICTIM', page
-                        print 'LEN', len(memory)
-                        print 'MEM', memory
-                        print 'REF (a)', ref
-
-                elif policy == 'OPT':
-                    maxReplace  = -1
-                    replaceIdx  = -1
-                    replacePage = -1
-                    # print 'OPT: access %d, memory %s' % (n, memory) 
-                    # print 'OPT: replace from FUTURE (%s)' % addrList[addrIndex+1:]
-                    for pageIndex in range(0,count):
-                        page = memory[pageIndex]
-                        # now, have page 'page' at index 'pageIndex' in memory
-                        whenReferenced = len(addrList)
-                        # whenReferenced tells us when, in the future, this was referenced
-                        for futureIdx in range(addrIndex+1,len(addrList)):
-                            futurePage = int(addrList[futureIdx])
-                            if page == futurePage:
-                                whenReferenced = futureIdx
-                                break
-                        # print 'OPT: page %d is referenced at %d' % (page, whenReferenced)
-                        if whenReferenced >= maxReplace:
-                            # print 'OPT: ??? updating maxReplace (%d %d %d)' % (replaceIdx, replacePage, maxReplace)
-                            replaceIdx  = pageIndex
-                            replacePage = page
-                            maxReplace  = whenReferenced
-                            # print 'OPT: --> updating maxReplace (%d %d %d)' % (replaceIdx, replacePage, maxReplace)
-                    victim = memory.pop(replaceIdx)
-                    # print 'OPT: replacing page %d (idx:%d) because I saw it in future at %d' % (victim, replaceIdx, whenReferenced)
             else:
                 # miss, but no replacement needed (page frame not full)
                 victim = -1
